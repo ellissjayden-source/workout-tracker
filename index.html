@@ -154,7 +154,7 @@
 <body>
 
 <div class="screen active" id="screen-home">
-  <div class="page-header"><div><h1>Workouts</h1><p id="homeDateStr"></p></div><div style="display:flex;align-items:center;gap:10px;"><button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode"><svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><div class="sync-dot" id="syncDot"></div></div></div>
+  <div class="page-header"><div><h1>Workouts</h1><p id="homeDateStr"></p></div><div style="display:flex;align-items:center;gap:10px;"><button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode">🌙</button><div class="sync-dot" id="syncDot"></div></div></div>
   <div class="page-body">
     <div class="card-title" style="padding:0 0 0.5rem;">Your routines</div>
     <div class="routine-grid" id="routineGrid"><div class="loading">Connecting...</div></div>
@@ -163,9 +163,9 @@
 
 <div class="screen no-nav" id="screen-workout">
   <div class="workout-header">
-    <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;padding:0;line-height:1;" onclick="confirmEndWorkout()">←</button>
+    <button style="background:none;border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:13px;font-weight:700;padding:7px 14px;border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;" onclick="goBackToHome()">← Back</button>
     <div class="workout-title" id="workoutTitle">Workout</div>
-    <div style="display:flex;align-items:center;gap:8px;"><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><div class="workout-timer-badge" id="workoutTimerBadge">0:00</div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button><div class="workout-timer-badge" id="workoutTimerBadge">0:00</div></div>
   </div>
   <div id="workoutExercises" style="padding:1rem 0 0;flex:1;overflow-y:auto;"></div>
   <div class="workout-footer">
@@ -174,26 +174,15 @@
   </div>
 </div>
 
-<div class="rest-overlay" id="restOverlay">
-  <div class="rest-lbl">Rest timer</div>
-  <div class="rest-display" id="restDisplay">1:30</div>
-  <div class="rest-lbl">Adjust time</div>
-  <div class="rest-presets">
-    <button class="rest-preset" onclick="setRestTimer(60)">1 min</button>
-    <button class="rest-preset" onclick="setRestTimer(90)">1:30</button>
-    <button class="rest-preset" onclick="setRestTimer(120)">2 min</button>
-    <button class="rest-preset" onclick="setRestTimer(180)">3 min</button>
-  </div>
-  <button class="rest-skip" onclick="closeRestTimer()">Done resting 💪</button>
-</div>
+<div id="restOverlay"></div>
 
 <div class="screen" id="screen-builder">
-  <div class="page-header"><div><h1>Routines</h1><p>Create and edit your routines</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><button class="btn btn-primary" style="width:auto;padding:10px 18px;" onclick="openNewRoutineModal()">+ Routine</button></div></div>
+  <div class="page-header"><div><h1>Routines</h1><p>Create and edit your routines</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button><button class="btn btn-primary" style="width:auto;padding:10px 18px;" onclick="openNewRoutineModal()">+ Routine</button></div></div>
   <div class="page-body"><div class="builder-list" id="builderList"><div class="loading">Connecting...</div></div></div>
 </div>
 
 <div class="screen" id="screen-progress">
-  <div class="page-header"><div><h1>📈 Progress</h1><p>Track your gains</p></div><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div>
+  <div class="page-header"><div><h1>📈 Progress</h1><p>Track your gains</p></div><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button></div>
   <div class="page-body">
     <div class="card">
       <div class="card-title">Select exercise</div>
@@ -204,8 +193,8 @@
         <div class="card-title" id="progressExTitle">Exercise</div>
         <div id="graphContainer" style="width:100%;overflow-x:auto;"></div>
         <div style="display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--muted);font-weight:700;">
-          <span><span style="display:inline-block;width:12px;height:3px;background:var(--accent);border-radius:2px;vertical-align:middle;margin-right:4px;"></span>Max weight/reps</span>
-          <span><span style="display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;vertical-align:middle;margin-right:4px;"></span>All-time PR</span>
+          <span><span style="display:inline-block;width:12px;height:3px;background:#58a6ff;border-radius:2px;vertical-align:middle;margin-right:4px;"></span>Weight (KG)</span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:#39d353;border-radius:50%;vertical-align:middle;margin-right:4px;"></span>Personal Best (KG)</span>
         </div>
       </div>
       <div class="card"><div class="card-title">Session history</div><div class="prog-list" id="progressList"></div></div>
@@ -411,15 +400,13 @@
 
   function renderActiveWorkout() {
     document.getElementById('workoutExercises').innerHTML=A.activeWorkoutData.map((ex,ei)=>{
-      const lastStr=ex.lastSession?'🎯 Last ('+fmtDate(ex.lastSession.date)+'): '+ex.lastSession.sets.map(s=>ex.bodyweight?s.reps+' reps':s.weight+'kg×'+s.reps).join(', '):'🎯 No previous data — set your starting weights!';
       return `<div class="exercise-block" id="exb-${ei}">
         <div class="exercise-block-header"><div class="ex-name">${ex.exName}</div>${ex.bodyweight?'<span class="ex-bw-badge">Bodyweight</span>':''}</div>
-        <div class="ex-last">${lastStr}</div>
         <table class="sets-table">
           <thead><tr><th>Set</th>${!ex.bodyweight?'<th>Weight (kg)</th>':''}<th>Reps</th><th>Done</th><th></th></tr></thead>
-          <tbody>${ex.sets.map((s,si)=>`<tr style="${s.done?'opacity:0.5':''}"><td class="set-num">${si+1}</td>${!ex.bodyweight?`<td><input class="set-input${s.lastWeight!==null&&s.weight>s.lastWeight?' improved':''}" type="number" value="${s.weight}" min="0" step="0.5" oninput="updateSet(${ei},${si},'weight',this.value)"/></td>`:''}<td><input class="set-input" type="number" value="${s.reps}" min="1" step="1" oninput="updateSet(${ei},${si},'reps',this.value)"/></td><td><button class="set-done-btn${s.done?' done':''}" onclick="toggleSetDone(${ei},${si})">${s.done?'✓':'○'}</button></td><td><button class="set-del-btn" onclick="deleteSet(${ei},${si})">✕</button></td></tr>`).join('')}</tbody>
+          <tbody>${ex.sets.map((s,si)=>`<tr style="${s.done?'opacity:0.5':''}"><td class="set-num">${si+1}</td>${!ex.bodyweight?`<td><input class="set-input${s.lastWeight!==null&&s.weight>s.lastWeight?' improved':''}" type="number" value="${s.weight}" min="0" step="0.5" oninput="updateSet(${ei},${si},'weight',this.value)"/></td>`:''}<td><input class="set-input" type="number" value="${s.reps}" min="1" step="1" oninput="updateSet(${ei},${si},'reps',this.value)"/></td><td style="display:flex;align-items:center;gap:6px;"><button class="set-done-btn${s.done?' done':''}" onclick="toggleSetDone(${ei},${si})">${s.done?'✓':'○'}</button><button id="timer-btn-${ei}-${si}" onclick="startSetTimer(${ei},${si})" style="background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;font-size:12px;font-weight:700;padding:5px 8px;font-family:'Nunito',sans-serif;min-width:44px;">2:00</button></td><td><button class="set-del-btn" onclick="deleteSet(${ei},${si})">✕</button></td></tr>`).join('')}</tbody>
         </table>
-        <div class="ex-footer"><button class="ex-footer-btn" onclick="addSet(${ei})">+ Add set</button><button class="ex-footer-btn" onclick="openRestTimer()">⏱ Rest</button></div>
+        <div class="ex-footer"><button class="ex-footer-btn" onclick="addSet(${ei})">+ Add set</button></div>
       </div>`;
     }).join('');
   }
@@ -449,6 +436,15 @@
     A.activeWorkoutData.push({exId:null,exName:name,bodyweight:bw,oneOff:true,lastSession:last,sets:Array.from({length:n},(_,i)=>{const ls=last?last.sets[Math.min(i,last.sets.length-1)]:null;return{weight:ls?ls.weight:parseFloat(document.getElementById('oneOffWeight').value)||0,reps:ls?ls.reps:parseInt(document.getElementById('oneOffReps').value)||10,done:false,lastWeight:ls?ls.weight:null,lastReps:ls?ls.reps:null};})});
     renderActiveWorkout(); closeModal('oneOffModal'); showToast(name+' added!');
   }
+  window.goBackToHome = function() {
+    // Just go home without ending - workout continues in background
+    document.getElementById('bottomNav').style.display = 'flex';
+    document.querySelectorAll('.screen:not(#screen-workout)').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-home').classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.screen==='home'));
+    // Show "Continue workout" banner on home
+    renderContinueBanner();
+  }
   window.confirmEndWorkout = function() { if(confirm('End without saving?')) endWorkout(); }
   window.finishWorkout = async function() {
     clearInterval(A.workoutTimerInterval);
@@ -464,7 +460,8 @@
     endWorkout();
   }
   function endWorkout() {
-    clearInterval(A.workoutTimerInterval); clearInterval(A.restTimerInterval); closeRestTimer();
+    clearInterval(A.workoutTimerInterval); clearInterval(A.restTimerInterval); clearInterval(A.activeSetTimerInterval); closeRestTimer();
+    const banner = document.getElementById('continueBanner'); if(banner) banner.remove();
     A.activeWorkoutData=[]; A.activeRoutine=null;
     document.getElementById('bottomNav').style.display='flex';
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -473,18 +470,58 @@
   }
 
   // ---- REST TIMER ----
-  window.openRestTimer = function() { setRestTimer(90); document.getElementById('restOverlay').classList.add('open'); }
-  window.closeRestTimer = function() { clearInterval(A.restTimerInterval); document.getElementById('restOverlay').classList.remove('open'); }
-  window.setRestTimer = function(secs) {
-    clearInterval(A.restTimerInterval); A.restSecondsLeft=secs;
-    function tick(){const m=Math.floor(A.restSecondsLeft/60),s=A.restSecondsLeft%60;document.getElementById('restDisplay').textContent=m+':'+s.toString().padStart(2,'0');document.getElementById('restDisplay').style.color=A.restSecondsLeft<=10?'var(--red)':'var(--text)';}
+  // Inline set rest timer
+  A.activeSetTimerInterval = null;
+  A.activeSetTimerEi = null;
+  A.activeSetTimerSi = null;
+  window.startSetTimer = function(ei, si) {
+    // If same button clicked again, cancel
+    if (A.activeSetTimerEi===ei && A.activeSetTimerSi===si) {
+      clearInterval(A.activeSetTimerInterval);
+      A.activeSetTimerInterval=null; A.activeSetTimerEi=null; A.activeSetTimerSi=null;
+      const btn = document.getElementById('timer-btn-'+ei+'-'+si);
+      if(btn) btn.textContent='2:00';
+      return;
+    }
+    // Cancel any existing timer
+    if (A.activeSetTimerInterval) {
+      clearInterval(A.activeSetTimerInterval);
+      const old = document.getElementById('timer-btn-'+A.activeSetTimerEi+'-'+A.activeSetTimerSi);
+      if(old) old.textContent='2:00';
+    }
+    A.activeSetTimerEi=ei; A.activeSetTimerSi=si;
+    let secs=120;
+    function tick() {
+      const m=Math.floor(secs/60),s=secs%60;
+      const btn=document.getElementById('timer-btn-'+ei+'-'+si);
+      if(btn){btn.textContent=m+':'+s.toString().padStart(2,'0');btn.style.color=secs<=10?'var(--red)':'var(--muted)';}
+    }
     tick();
-    A.restTimerInterval=setInterval(()=>{A.restSecondsLeft--;tick();if(A.restSecondsLeft<=0){clearInterval(A.restTimerInterval);closeRestTimer();showToast('Rest done! 💪');}},1000);
+    A.activeSetTimerInterval=setInterval(()=>{secs--;tick();if(secs<=0){clearInterval(A.activeSetTimerInterval);A.activeSetTimerInterval=null;A.activeSetTimerEi=null;A.activeSetTimerSi=null;showToast('Rest done! 💪');}},1000);
   }
+  window.closeRestTimer = function() {}
 
   // ---- RENDER HOME ----
+  function renderContinueBanner() {
+    const existing = document.getElementById('continueBanner');
+    if (existing) existing.remove();
+    if (!A.activeRoutine) return;
+    const banner = document.createElement('div');
+    banner.id = 'continueBanner';
+    banner.style.cssText = 'background:var(--accent);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;';
+    banner.innerHTML = `<div style="font-size:14px;font-weight:800;color:#fff;">Workout in progress — ${A.activeRoutine.name}</div><button onclick="resumeWorkout()" style="background:rgba(255,255,255,0.25);border:none;border-radius:var(--radius-sm);padding:7px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#fff;cursor:pointer;">Continue →</button>`;
+    const body = document.querySelector('#screen-home .page-body');
+    if (body) body.insertBefore(banner, body.firstChild);
+  }
+  window.resumeWorkout = function() {
+    document.getElementById('bottomNav').style.display = 'none';
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-workout').classList.add('active');
+    window.scrollTo(0, 0);
+  }
   function renderHome() {
     document.getElementById('homeDateStr').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});
+    renderContinueBanner();
     const grid=document.getElementById('routineGrid');
     if(!A.routines.length){grid.innerHTML=`<div class="empty"><div class="empty-icon">🏋️</div>No routines yet.<br>Go to Builder to create your first!</div><button class="add-routine-card" onclick="navigateTo('builder')">+ Create your first routine</button>`;return;}
     grid.innerHTML=A.routines.map(r=>{
@@ -574,7 +611,7 @@
         <text x="${pL-4}" y="${toY(minV).toFixed(1)}" text-anchor="end" fill="#8b949e" font-size="9" font-family="Nunito,sans-serif" dominant-baseline="middle">${bw?Math.round(minV):minV.toFixed(1)+'kg'}</text>
         <path d="${area}" fill="url(#ag)"/>
         <path d="${line}" fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        ${pts.map((pt,i)=>`<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${i===prIdx?6:4}" fill="${i===prIdx?'var(--green)':'#f07030'}" stroke="var(--bg)" stroke-width="2"/>`).join('')}
+        ${pts.map((pt,i)=>`<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${i===prIdx?6:4}" fill="${i===prIdx?'#39d353':'#58a6ff'}" stroke="var(--bg)" stroke-width="2"/>`).join('')}
         ${dateLabels}
       </svg>`;
     }
@@ -616,10 +653,8 @@
   document.getElementById('homeDateStr').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});
 
   // Theme toggle
-  const SUN_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
-  const MOON_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
   function setThemeIcons(isLight) {
-    document.querySelectorAll('.theme-btn').forEach(b => b.innerHTML = isLight ? SUN_SVG : MOON_SVG);
+    document.querySelectorAll('.theme-btn').forEach(b => b.textContent = isLight ? '⬤' : '🌙');
   }
   window.toggleTheme = function() {
     const isLight = document.body.classList.toggle('light');
@@ -630,6 +665,4 @@
     document.body.classList.add('light');
     setThemeIcons(true);
   }
-</script>
-</body>
-</html>
+  
