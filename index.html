@@ -163,7 +163,7 @@
 
 <div class="screen no-nav" id="screen-workout">
   <div class="workout-header">
-    <button style="background:none;border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:13px;font-weight:700;padding:7px 14px;border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;" onclick="goBackToHome()">← Back</button>
+    <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;padding:0;line-height:1;" onclick="confirmEndWorkout()">←</button>
     <div class="workout-title" id="workoutTitle">Workout</div>
     <div style="display:flex;align-items:center;gap:8px;"><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><div class="workout-timer-badge" id="workoutTimerBadge">0:00</div></div>
   </div>
@@ -256,10 +256,6 @@
 <div class="toast" id="toast"></div>
 
 <script type="module">
-  window.onerror = function(msg, src, line, col, err) {
-    console.error("JS Error:", msg, "line:", line, err);
-    document.getElementById('routineGrid').innerHTML = '<div style="color:red;padding:1rem;font-size:12px;">JS Error: ' + msg + ' (line ' + line + ')</div>';
-  };
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -272,17 +268,10 @@
     appId: "1:428146922269:web:80f5b6c08ccd5e823fc7f4"
   };
 
-  let app, db, routinesCol, workoutLogsCol;
-  try {
-    app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    routinesCol = collection(db, "routines");
-    workoutLogsCol = collection(db, "workoutLogs");
-    console.log("Firebase init OK");
-  } catch(e) {
-    console.error("Firebase init FAILED:", e);
-    document.getElementById('routineGrid').innerHTML = '<div style="color:red;padding:1rem;">Firebase error: ' + e.message + '</div>';
-  }
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const routinesCol = collection(db, "routines");
+  const workoutLogsCol = collection(db, "workoutLogs");
 
   // All state on window so it's accessible everywhere
   window.APP = {
@@ -447,33 +436,7 @@
     A.activeWorkoutData.push({exId:null,exName:name,bodyweight:bw,oneOff:true,lastSession:last,sets:Array.from({length:n},(_,i)=>{const ls=last?last.sets[Math.min(i,last.sets.length-1)]:null;return{weight:ls?ls.weight:parseFloat(document.getElementById('oneOffWeight').value)||0,reps:ls?ls.reps:parseInt(document.getElementById('oneOffReps').value)||10,done:false,lastWeight:ls?ls.weight:null,lastReps:ls?ls.reps:null};})});
     renderActiveWorkout(); closeModal('oneOffModal'); showToast(name+' added!');
   }
-  function renderContinueBanner() {
-    const existing = document.getElementById('continueBanner');
-    if (existing) existing.remove();
-    if (!A.activeRoutine) return;
-    const banner = document.createElement('div');
-    banner.id = 'continueBanner';
-    banner.style.cssText = 'background:var(--accent);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;';
-    banner.innerHTML = `<div style="font-size:14px;font-weight:800;color:#fff;">Workout in progress — ${A.activeRoutine.name}</div><button onclick="resumeWorkout()" style="background:rgba(255,255,255,0.25);border:none;border-radius:var(--radius-sm);padding:7px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#fff;cursor:pointer;">Continue →</button>`;
-    const body = document.querySelector('#screen-home .page-body');
-    if (body) body.insertBefore(banner, body.firstChild);
-  }
-  window.resumeWorkout = function() {
-    document.getElementById('bottomNav').style.display = 'none';
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-workout').classList.add('active');
-    window.scrollTo(0, 0);
-  }
-  window.goBackToHome = function() {
-    // Just go home without ending - workout continues in background
-    document.getElementById('bottomNav').style.display = 'flex';
-    document.querySelectorAll('.screen:not(#screen-workout)').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-home').classList.add('active');
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.screen==='home'));
-    // Show "Continue workout" banner on home
-    renderContinueBanner();
-  }
-  window.confirmEndWorkout = function() { if(confirm('End without saving?')) endWorkout(); }
+  window.confirmEndWorkout = function() { if(confirm('End workout without saving?')) endWorkout(); }
   window.finishWorkout = async function() {
     clearInterval(A.workoutTimerInterval);
     const duration=Math.floor((new Date()-A.workoutStartTime)/60000);
@@ -489,7 +452,6 @@
   }
   function endWorkout() {
     clearInterval(A.workoutTimerInterval); clearInterval(A.restTimerInterval); clearInterval(A.activeSetTimerInterval); closeRestTimer();
-    const banner = document.getElementById('continueBanner'); if(banner) banner.remove();
     A.activeWorkoutData=[]; A.activeRoutine=null;
     document.getElementById('bottomNav').style.display='flex';
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -532,7 +494,6 @@
   // ---- RENDER HOME ----
   function renderHome() {
     document.getElementById('homeDateStr').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});
-    renderContinueBanner();
     const grid=document.getElementById('routineGrid');
     if(!A.routines.length){grid.innerHTML=`<div class="empty"><div class="empty-icon">🏋️</div>No routines yet.<br>Go to Builder to create your first!</div><button class="add-routine-card" onclick="navigateTo('builder')">+ Create your first routine</button>`;return;}
     grid.innerHTML=A.routines.map(r=>{
@@ -645,13 +606,12 @@
   }
 
   // ---- FIREBASE ----
-  if (!routinesCol) { console.error("routinesCol not initialized"); return; }
   onSnapshot(query(routinesCol,orderBy("createdAt","asc")),snap=>{
     document.getElementById('syncDot').classList.add('live');
     A.routines=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderHome(); renderBuilder();
     if(document.getElementById('screen-progress').classList.contains('active')) renderProgressExButtons();
-  },err=>{document.getElementById('syncDot').classList.remove('live');console.error('Routines:',err);});
+  },err=>{console.error('Routines:',err);document.getElementById('syncDot').classList.remove('live');});
 
   onSnapshot(query(workoutLogsCol,orderBy("createdAt","desc")),snap=>{
     A.logs=snap.docs.map(d=>({id:d.id,...d.data()}));
