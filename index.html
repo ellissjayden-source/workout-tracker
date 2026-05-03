@@ -154,7 +154,7 @@
 <body>
 
 <div class="screen active" id="screen-home">
-  <div class="page-header"><div><h1>Workouts</h1><p id="homeDateStr"></p></div><div style="display:flex;align-items:center;gap:10px;"><button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode">🌙</button><div class="sync-dot" id="syncDot"></div></div></div>
+  <div class="page-header"><div><h1>Workouts</h1><p id="homeDateStr"></p></div><div style="display:flex;align-items:center;gap:10px;"><button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode"><svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><div class="sync-dot" id="syncDot"></div></div></div>
   <div class="page-body">
     <div class="card-title" style="padding:0 0 0.5rem;">Your routines</div>
     <div class="routine-grid" id="routineGrid"><div class="loading">Connecting...</div></div>
@@ -165,7 +165,7 @@
   <div class="workout-header">
     <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;padding:0;line-height:1;" onclick="confirmEndWorkout()">←</button>
     <div class="workout-title" id="workoutTitle">Workout</div>
-    <div class="workout-timer-badge" id="workoutTimerBadge">0:00</div>
+    <div style="display:flex;align-items:center;gap:8px;"><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><div class="workout-timer-badge" id="workoutTimerBadge">0:00</div></div>
   </div>
   <div id="workoutExercises" style="padding:1rem 0 0;flex:1;overflow-y:auto;"></div>
   <div class="workout-footer">
@@ -188,12 +188,12 @@
 </div>
 
 <div class="screen" id="screen-builder">
-  <div class="page-header"><div><h1>Routines</h1><p>Create and edit your routines</p></div><button class="btn btn-primary" style="width:auto;padding:10px 18px;" onclick="openNewRoutineModal()">+ Routine</button></div>
+  <div class="page-header"><div><h1>Routines</h1><p>Create and edit your routines</p></div><div style="display:flex;align-items:center;gap:8px;"><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><button class="btn btn-primary" style="width:auto;padding:10px 18px;" onclick="openNewRoutineModal()">+ Routine</button></div></div>
   <div class="page-body"><div class="builder-list" id="builderList"><div class="loading">Connecting...</div></div></div>
 </div>
 
 <div class="screen" id="screen-progress">
-  <div class="page-header"><div><h1>📈 Progress</h1><p>Track your gains</p></div></div>
+  <div class="page-header"><div><h1>📈 Progress</h1><p>Track your gains</p></div><button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div>
   <div class="page-body">
     <div class="card">
       <div class="card-title">Select exercise</div>
@@ -205,7 +205,7 @@
         <div id="graphContainer" style="width:100%;overflow-x:auto;"></div>
         <div style="display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--muted);font-weight:700;">
           <span><span style="display:inline-block;width:12px;height:3px;background:var(--accent);border-radius:2px;vertical-align:middle;margin-right:4px;"></span>Max weight/reps</span>
-          <span><span style="display:inline-block;width:8px;height:8px;background:var(--amber);border-radius:50%;vertical-align:middle;margin-right:4px;"></span>PR</span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;vertical-align:middle;margin-right:4px;"></span>All-time PR</span>
         </div>
       </div>
       <div class="card"><div class="card-title">Session history</div><div class="prog-list" id="progressList"></div></div>
@@ -215,9 +215,9 @@
 </div>
 
 <div class="bottom-nav" id="bottomNav">
-  <button class="nav-btn active" data-screen="home" onclick="navigateTo('home')"><div class="nav-btn-icon">▦</div>Main</button>
-  <button class="nav-btn" data-screen="builder" onclick="navigateTo('builder')"><div class="nav-btn-icon">≡</div>Routines</button>
-  <button class="nav-btn" data-screen="progress" onclick="navigateTo('progress')"><div class="nav-btn-icon">📈</div>Progress</button>
+  <button class="nav-btn active" data-screen="home" onclick="navigateTo('home')">Main</button>
+  <button class="nav-btn" data-screen="builder" onclick="navigateTo('builder')">Routines</button>
+  <button class="nav-btn" data-screen="progress" onclick="navigateTo('progress')">📈 Progress</button>
 </div>
 
 <!-- MODALS -->
@@ -498,7 +498,7 @@
   function renderBuilder() {
     const list=document.getElementById('builderList');
     if(!A.routines.length){list.innerHTML=`<div class="empty"><div class="empty-icon">🛠</div>No routines yet!</div>`;return;}
-    list.innerHTML=A.routines.map(r=>`<div class="builder-card"><div class="builder-header"><div class="builder-name">${r.name}</div><button class="btn-danger" onclick="openNewRoutineModal('${r.id}')">✏️</button><button class="btn-danger" onclick="deleteRoutine('${r.id}')">🗑️</button></div><div class="builder-ex-list">${(r.exercises||[]).map(ex=>{const last=getLastSession(ex.name);const lastStr=last?' · Last: '+(ex.bodyweight?last.sets.map(s=>s.reps+'r').join(', '):last.sets.map(s=>s.weight+'kg×'+s.reps).join(', ')):'';return `<div class="builder-ex-item"><div class="builder-ex-info"><div class="builder-ex-name">${ex.name}${ex.bodyweight?' <span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:999px;background:var(--purple-bg);color:var(--purple);">BW</span>':''}</div><div class="builder-ex-meta">${ex.sets||3} sets · ${ex.bodyweight?ex.reps+' reps':ex.weight+'kg × '+ex.reps+' reps'}${lastStr?'<br><span style="color:var(--accent);">↑'+lastStr+'</span>':''}</div></div><button class="btn-danger" onclick="deleteExercise('${r.id}','${ex.id}')">✕</button></div>`;}).join('')||'<div style="padding:1rem 1.25rem;font-size:13px;color:var(--hint);">No exercises yet</div>'}</div><div class="builder-footer"><button class="btn btn-outline" style="width:100%;" onclick="openAddExModal('${r.id}')">+ Add exercise</button></div></div>`).join('');
+    list.innerHTML=A.routines.map(r=>`<div class="builder-card"><div class="builder-header"><div class="builder-name">${r.name}</div><button class="btn-danger" onclick="openNewRoutineModal('${r.id}')">✏️</button><button class="btn-danger" onclick="deleteRoutine('${r.id}')">🗑️</button></div><div class="builder-ex-list">${(r.exercises||[]).map(ex=>{const last=getLastSession(ex.name);return `<div class="builder-ex-item"><div class="builder-ex-info"><div class="builder-ex-name">${ex.name}${ex.bodyweight?' <span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:999px;background:var(--purple-bg);color:var(--purple);">BW</span>':''}</div><div class="builder-ex-meta">${ex.sets||3} sets · ${ex.bodyweight?ex.reps+' reps':ex.weight+'kg × '+ex.reps+' reps'}</div></div><button class="btn-danger" onclick="deleteExercise('${r.id}','${ex.id}')">✕</button></div>`;}).join('')||'<div style="padding:1rem 1.25rem;font-size:13px;color:var(--hint);">No exercises yet</div>'}</div><div class="builder-footer"><button class="btn btn-outline" style="width:100%;" onclick="openAddExModal('${r.id}')">+ Add exercise</button></div></div>`).join('');
   }
 
   // ---- PROGRESS ----
@@ -562,8 +562,8 @@
       const line=pts.map((pt,i)=>`${i===0?'M':'L'}${pt.x.toFixed(1)},${pt.y.toFixed(1)}`).join(' ');
       const area=line+` L${pts[pts.length-1].x.toFixed(1)},${H-pB} L${pts[0].x.toFixed(1)},${H-pB} Z`;
       let prMax=-Infinity;
-      const prSet=new Set();
-      pts.forEach((pt,i)=>{const v=bw?pt.p.maxReps:pt.p.weight;if(v>prMax){prMax=v;prSet.add(i);}});
+      let prIdx=-1;
+      pts.forEach((pt,i)=>{const v=bw?pt.p.maxReps:pt.p.weight;if(v>prMax){prMax=v;prIdx=i;}});
       const dateLabels=pts.length<=7?pts.map(pt=>`<text x="${pt.x.toFixed(1)}" y="${H-pB+14}" text-anchor="middle" fill="#8b949e" font-size="8" font-family="Nunito,sans-serif">${new Date(pt.p.date).toLocaleDateString('en-AU',{day:'numeric',month:'short'})}</text>`).join(''):
         `<text x="${pts[0].x}" y="${H-pB+14}" text-anchor="start" fill="#8b949e" font-size="8" font-family="Nunito,sans-serif">${new Date(points[0].date).toLocaleDateString('en-AU',{day:'numeric',month:'short'})}</text><text x="${pts[pts.length-1].x}" y="${H-pB+14}" text-anchor="end" fill="#8b949e" font-size="8" font-family="Nunito,sans-serif">${new Date(points[points.length-1].date).toLocaleDateString('en-AU',{day:'numeric',month:'short'})}</text>`;
       gc.innerHTML=`<svg viewBox="0 0 ${W} ${H+20}" width="100%" style="display:block;">
@@ -574,7 +574,7 @@
         <text x="${pL-4}" y="${toY(minV).toFixed(1)}" text-anchor="end" fill="#8b949e" font-size="9" font-family="Nunito,sans-serif" dominant-baseline="middle">${bw?Math.round(minV):minV.toFixed(1)+'kg'}</text>
         <path d="${area}" fill="url(#ag)"/>
         <path d="${line}" fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        ${pts.map((pt,i)=>`<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${prSet.has(i)?6:4}" fill="${prSet.has(i)?'var(--amber)':'#58a6ff'}" stroke="var(--bg)" stroke-width="2"/>`).join('')}
+        ${pts.map((pt,i)=>`<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${i===prIdx?6:4}" fill="${i===prIdx?'var(--green)':'#f07030'}" stroke="var(--bg)" stroke-width="2"/>`).join('')}
         ${dateLabels}
       </svg>`;
     }
@@ -616,14 +616,19 @@
   document.getElementById('homeDateStr').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});
 
   // Theme toggle
+  const SUN_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+  const MOON_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  function setThemeIcons(isLight) {
+    document.querySelectorAll('.theme-btn').forEach(b => b.innerHTML = isLight ? SUN_SVG : MOON_SVG);
+  }
   window.toggleTheme = function() {
     const isLight = document.body.classList.toggle('light');
-    document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
+    setThemeIcons(isLight);
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
   }
   if (localStorage.getItem('theme') === 'light') {
     document.body.classList.add('light');
-    document.getElementById('themeBtn').textContent = '☀️';
+    setThemeIcons(true);
   }
 </script>
 </body>
