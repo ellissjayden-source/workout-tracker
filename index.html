@@ -447,6 +447,23 @@
     A.activeWorkoutData.push({exId:null,exName:name,bodyweight:bw,oneOff:true,lastSession:last,sets:Array.from({length:n},(_,i)=>{const ls=last?last.sets[Math.min(i,last.sets.length-1)]:null;return{weight:ls?ls.weight:parseFloat(document.getElementById('oneOffWeight').value)||0,reps:ls?ls.reps:parseInt(document.getElementById('oneOffReps').value)||10,done:false,lastWeight:ls?ls.weight:null,lastReps:ls?ls.reps:null};})});
     renderActiveWorkout(); closeModal('oneOffModal'); showToast(name+' added!');
   }
+  function renderContinueBanner() {
+    const existing = document.getElementById('continueBanner');
+    if (existing) existing.remove();
+    if (!A.activeRoutine) return;
+    const banner = document.createElement('div');
+    banner.id = 'continueBanner';
+    banner.style.cssText = 'background:var(--accent);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;';
+    banner.innerHTML = `<div style="font-size:14px;font-weight:800;color:#fff;">Workout in progress — ${A.activeRoutine.name}</div><button onclick="resumeWorkout()" style="background:rgba(255,255,255,0.25);border:none;border-radius:var(--radius-sm);padding:7px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#fff;cursor:pointer;">Continue →</button>`;
+    const body = document.querySelector('#screen-home .page-body');
+    if (body) body.insertBefore(banner, body.firstChild);
+  }
+  window.resumeWorkout = function() {
+    document.getElementById('bottomNav').style.display = 'none';
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-workout').classList.add('active');
+    window.scrollTo(0, 0);
+  }
   window.goBackToHome = function() {
     // Just go home without ending - workout continues in background
     document.getElementById('bottomNav').style.display = 'flex';
@@ -513,23 +530,6 @@
   window.closeRestTimer = function() {}
 
   // ---- RENDER HOME ----
-  function renderContinueBanner() {
-    const existing = document.getElementById('continueBanner');
-    if (existing) existing.remove();
-    if (!A.activeRoutine) return;
-    const banner = document.createElement('div');
-    banner.id = 'continueBanner';
-    banner.style.cssText = 'background:var(--accent);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;';
-    banner.innerHTML = `<div style="font-size:14px;font-weight:800;color:#fff;">Workout in progress — ${A.activeRoutine.name}</div><button onclick="resumeWorkout()" style="background:rgba(255,255,255,0.25);border:none;border-radius:var(--radius-sm);padding:7px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#fff;cursor:pointer;">Continue →</button>`;
-    const body = document.querySelector('#screen-home .page-body');
-    if (body) body.insertBefore(banner, body.firstChild);
-  }
-  window.resumeWorkout = function() {
-    document.getElementById('bottomNav').style.display = 'none';
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-workout').classList.add('active');
-    window.scrollTo(0, 0);
-  }
   function renderHome() {
     document.getElementById('homeDateStr').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});
     renderContinueBanner();
