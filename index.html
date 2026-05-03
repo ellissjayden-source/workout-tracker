@@ -18,13 +18,13 @@
       --radius:14px;--radius-sm:8px;
     }
     body.light{
-      --bg:#f5f5f0;--surface:#ffffff;--surface2:#f0ede8;--border:#ddd8d0;
-      --text:#1a1714;--muted:#6b6560;--hint:#b0aaa4;
-      --accent:#e05a1a;--accent-bg:#fdf0e8;
-      --green:#2d8a3e;--green-bg:#e8f5eb;
-      --red:#d03030;--red-bg:#fdeaea;
-      --amber:#b07010;--amber-bg:#fdf5e0;
-      --purple:#7050c8;--purple-bg:#f0eeff;
+      --bg:#ffffff;--surface:#ffffff;--surface2:#f6f8fa;--border:#e1e4e8;
+      --text:#0d1117;--muted:#57606a;--hint:#c9d1d9;
+      --accent:#e05a1a;--accent-bg:#fff3ed;
+      --green:#1a7f37;--green-bg:#dafbe1;
+      --red:#cf222e;--red-bg:#ffebe9;
+      --amber:#9a6700;--amber-bg:#fff8c5;
+      --purple:#6639ba;--purple-bg:#fbefff;
     }
     html,body{height:100%;}
     body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
@@ -154,7 +154,7 @@
 <body>
 
 <div class="screen active" id="screen-home">
-  <div class="page-header"><div><h1>💪 Workouts</h1><p id="homeDateStr"></p></div><div style="display:flex;align-items:center;gap:10px;"><button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode">🌙</button><div class="sync-dot" id="syncDot"></div></div></div>
+  <div class="page-header"><div><h1>Workouts</h1><p id="homeDateStr"></p></div><div style="display:flex;align-items:center;gap:10px;"><button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode">🌙</button><div class="sync-dot" id="syncDot"></div></div></div>
   <div class="page-body">
     <div class="card-title" style="padding:0 0 0.5rem;">Your routines</div>
     <div class="routine-grid" id="routineGrid"><div class="loading">Connecting...</div></div>
@@ -188,7 +188,7 @@
 </div>
 
 <div class="screen" id="screen-builder">
-  <div class="page-header"><div><h1>🛠 Builder</h1><p>Create and edit routines</p></div><button class="btn btn-primary" style="width:auto;padding:10px 18px;" onclick="openNewRoutineModal()">+ Routine</button></div>
+  <div class="page-header"><div><h1>Routines</h1><p>Create and edit your routines</p></div><button class="btn btn-primary" style="width:auto;padding:10px 18px;" onclick="openNewRoutineModal()">+ Routine</button></div>
   <div class="page-body"><div class="builder-list" id="builderList"><div class="loading">Connecting...</div></div></div>
 </div>
 
@@ -215,8 +215,8 @@
 </div>
 
 <div class="bottom-nav" id="bottomNav">
-  <button class="nav-btn active" data-screen="home" onclick="navigateTo('home')"><div class="nav-btn-icon">🏠</div>Home</button>
-  <button class="nav-btn" data-screen="builder" onclick="navigateTo('builder')"><div class="nav-btn-icon">🛠</div>Builder</button>
+  <button class="nav-btn active" data-screen="home" onclick="navigateTo('home')"><div class="nav-btn-icon">▦</div>Main</button>
+  <button class="nav-btn" data-screen="builder" onclick="navigateTo('builder')"><div class="nav-btn-icon">≡</div>Routines</button>
   <button class="nav-btn" data-screen="progress" onclick="navigateTo('progress')"><div class="nav-btn-icon">📈</div>Progress</button>
 </div>
 
@@ -225,10 +225,7 @@
   <div class="modal">
     <h3 id="newRoutineTitle">New routine</h3>
     <div class="field"><label>Name</label><input type="text" id="routineName" placeholder="e.g. Push day"/></div>
-    <div class="field"><label>Icon</label><div class="select-wrap"><select id="routineEmoji">
-      <option value="💪">💪 Strength</option><option value="🏋️">🏋️ Lifting</option><option value="🦵">🦵 Legs</option>
-      <option value="🫸">🫸 Push</option><option value="🫷">🫷 Pull</option><option value="🏃">🏃 Cardio</option><option value="🔥">🔥 HIIT</option>
-    </select></div></div>
+    
     <div class="modal-btns"><button class="btn btn-outline" onclick="closeModal('newRoutineModal')">Cancel</button><button class="btn btn-primary" onclick="saveRoutine()">Save</button></div>
   </div>
 </div>
@@ -402,7 +399,7 @@
       });
       return {exId:ex.id,exName:ex.name,bodyweight:ex.bodyweight||false,lastSession:last,sets};
     });
-    document.getElementById('workoutTitle').textContent=(routine.emoji||'💪')+' '+routine.name;
+    document.getElementById('workoutTitle').textContent=routine.name;
     A.workoutStartTime=new Date();
     A.workoutTimerInterval=setInterval(()=>{const e=Math.floor((new Date()-A.workoutStartTime)/1000);document.getElementById('workoutTimerBadge').textContent=Math.floor(e/60)+':'+(e%60).toString().padStart(2,'0');},1000);
     document.getElementById('bottomNav').style.display='none';
@@ -493,7 +490,7 @@
     grid.innerHTML=A.routines.map(r=>{
       const lastLog=[...A.logs].filter(l=>l.routineId===r.id).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
       const lastStr=lastLog?'Last: '+fmtDate(lastLog.date)+' · '+(lastLog.durationMins||0)+' mins':'Not done yet';
-      return `<div class="routine-card"><div class="routine-card-header"><div class="routine-emoji">${r.emoji||'💪'}</div><div class="routine-info"><div class="routine-name">${r.name}</div><div class="routine-meta">${(r.exercises||[]).length} exercises</div><div class="routine-last">${lastStr}</div></div></div><div class="routine-exercises">${(r.exercises||[]).map(e=>`<span class="routine-ex-tag">${e.name}</span>`).join('')||'<span style="font-size:12px;color:var(--hint);">No exercises yet</span>'}</div><button class="start-btn" onclick="startWorkout('${r.id}')">▶ Start workout</button></div>`;
+      return `<div class="routine-card"><div class="routine-card-header"><div class="routine-info"><div class="routine-name">${r.name}</div><div class="routine-meta">${(r.exercises||[]).length} exercises</div><div class="routine-last">${lastStr}</div></div></div><div class="routine-exercises">${(r.exercises||[]).map(e=>`<span class="routine-ex-tag">${e.name}</span>`).join('')||'<span style="font-size:12px;color:var(--hint);">No exercises yet</span>'}</div><button class="start-btn" onclick="startWorkout('${r.id}')">▶ Start workout</button></div>`;
     }).join('')+`<button class="add-routine-card" onclick="navigateTo('builder')">+ New routine</button>`;
   }
 
@@ -501,7 +498,7 @@
   function renderBuilder() {
     const list=document.getElementById('builderList');
     if(!A.routines.length){list.innerHTML=`<div class="empty"><div class="empty-icon">🛠</div>No routines yet!</div>`;return;}
-    list.innerHTML=A.routines.map(r=>`<div class="builder-card"><div class="builder-header"><div style="font-size:24px;">${r.emoji||'💪'}</div><div class="builder-name">${r.name}</div><button class="btn-danger" onclick="openNewRoutineModal('${r.id}')">✏️</button><button class="btn-danger" onclick="deleteRoutine('${r.id}')">🗑️</button></div><div class="builder-ex-list">${(r.exercises||[]).map(ex=>{const last=getLastSession(ex.name);const lastStr=last?' · Last: '+(ex.bodyweight?last.sets.map(s=>s.reps+'r').join(', '):last.sets.map(s=>s.weight+'kg×'+s.reps).join(', ')):'';return `<div class="builder-ex-item"><div class="builder-ex-info"><div class="builder-ex-name">${ex.name}${ex.bodyweight?' <span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:999px;background:var(--purple-bg);color:var(--purple);">BW</span>':''}</div><div class="builder-ex-meta">${ex.sets||3} sets · ${ex.bodyweight?ex.reps+' reps':ex.weight+'kg × '+ex.reps+' reps'}${lastStr?'<br><span style="color:var(--accent);">↑'+lastStr+'</span>':''}</div></div><button class="btn-danger" onclick="deleteExercise('${r.id}','${ex.id}')">✕</button></div>`;}).join('')||'<div style="padding:1rem 1.25rem;font-size:13px;color:var(--hint);">No exercises yet</div>'}</div><div class="builder-footer"><button class="btn btn-outline" style="width:100%;" onclick="openAddExModal('${r.id}')">+ Add exercise</button></div></div>`).join('');
+    list.innerHTML=A.routines.map(r=>`<div class="builder-card"><div class="builder-header"><div class="builder-name">${r.name}</div><button class="btn-danger" onclick="openNewRoutineModal('${r.id}')">✏️</button><button class="btn-danger" onclick="deleteRoutine('${r.id}')">🗑️</button></div><div class="builder-ex-list">${(r.exercises||[]).map(ex=>{const last=getLastSession(ex.name);const lastStr=last?' · Last: '+(ex.bodyweight?last.sets.map(s=>s.reps+'r').join(', '):last.sets.map(s=>s.weight+'kg×'+s.reps).join(', ')):'';return `<div class="builder-ex-item"><div class="builder-ex-info"><div class="builder-ex-name">${ex.name}${ex.bodyweight?' <span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:999px;background:var(--purple-bg);color:var(--purple);">BW</span>':''}</div><div class="builder-ex-meta">${ex.sets||3} sets · ${ex.bodyweight?ex.reps+' reps':ex.weight+'kg × '+ex.reps+' reps'}${lastStr?'<br><span style="color:var(--accent);">↑'+lastStr+'</span>':''}</div></div><button class="btn-danger" onclick="deleteExercise('${r.id}','${ex.id}')">✕</button></div>`;}).join('')||'<div style="padding:1rem 1.25rem;font-size:13px;color:var(--hint);">No exercises yet</div>'}</div><div class="builder-footer"><button class="btn btn-outline" style="width:100%;" onclick="openAddExModal('${r.id}')">+ Add exercise</button></div></div>`).join('');
   }
 
   // ---- PROGRESS ----
@@ -621,12 +618,12 @@
   // Theme toggle
   window.toggleTheme = function() {
     const isLight = document.body.classList.toggle('light');
-    document.getElementById('themeBtn').textContent = isLight ? '🌑' : '🌙';
+    document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
   }
   if (localStorage.getItem('theme') === 'light') {
     document.body.classList.add('light');
-    document.getElementById('themeBtn').textContent = '🌑';
+    document.getElementById('themeBtn').textContent = '☀️';
   }
 </script>
 </body>
