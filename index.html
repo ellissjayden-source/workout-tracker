@@ -256,6 +256,10 @@
 <div class="toast" id="toast"></div>
 
 <script type="module">
+  window.onerror = function(msg, src, line, col, err) {
+    console.error("JS Error:", msg, "line:", line, err);
+    document.getElementById('routineGrid').innerHTML = '<div style="color:red;padding:1rem;font-size:12px;">JS Error: ' + msg + ' (line ' + line + ')</div>';
+  };
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -268,10 +272,17 @@
     appId: "1:428146922269:web:80f5b6c08ccd5e823fc7f4"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const routinesCol = collection(db, "routines");
-  const workoutLogsCol = collection(db, "workoutLogs");
+  let app, db, routinesCol, workoutLogsCol;
+  try {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    routinesCol = collection(db, "routines");
+    workoutLogsCol = collection(db, "workoutLogs");
+    console.log("Firebase init OK");
+  } catch(e) {
+    console.error("Firebase init FAILED:", e);
+    document.getElementById('routineGrid').innerHTML = '<div style="color:red;padding:1rem;">Firebase error: ' + e.message + '</div>';
+  }
 
   // All state on window so it's accessible everywhere
   window.APP = {
@@ -634,6 +645,7 @@
   }
 
   // ---- FIREBASE ----
+  if (!routinesCol) { console.error("routinesCol not initialized"); return; }
   onSnapshot(query(routinesCol,orderBy("createdAt","asc")),snap=>{
     document.getElementById('syncDot').classList.add('live');
     A.routines=snap.docs.map(d=>({id:d.id,...d.data()}));
